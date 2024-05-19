@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import BaseSelect from "./components/BaseSelect";
+import { useConfirmModal } from "./components/ConfirmModalContext";
 
 function App() {
+  const { openModal } = useConfirmModal();
+  const data = [
+    {
+      id: "abc",
+      title: "abc",
+    },
+    {
+      id: "def",
+      title: "def",
+    },
+  ];
+  const performAsyncAction = async (): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
+  };
+
+  const onHandleSelectValue = (v: string | number) => {
+    console.log(v);
+  };
+  const handleOpenModal = () => {
+    openModal(
+      "Are you sure you want to perform this action?",
+      performAsyncAction
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BaseSelect
+        data={data}
+        onHandleSelectedValue={(value) => onHandleSelectValue(value)}
+      />
+      <button onClick={handleOpenModal}>Open Confirm Modal</button>
     </div>
   );
 }
